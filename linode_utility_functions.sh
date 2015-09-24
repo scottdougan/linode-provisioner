@@ -2,7 +2,7 @@
 #Author: Scott Dougan
 #Date: September 22, 2015
 #Version: 1.1
-#Utility function for Linode CLI.
+#Utility functions for Linode CLI.
 
 function linode_info {
 	local HOSTNAME="$1"

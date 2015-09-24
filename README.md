@@ -28,4 +28,19 @@ The "create_linode.sh" script takes 2 optional parameters: First, the name of th
 ./create_linode.sh Lucky cats.com
 ```
 
+### SSH config template
+Once the provision script finishes, a ssh config template is created (if a server name was entered).  I usually just take the template and append it to my current ssh config file. Feel free to remove or change this template as you see fit.  Pre-existing templates are removed next time the script is executed.
+
+Below is an example template.
+```
+Host			lucky
+Hostname		lucky.cats.com
+IdentityFile	~/.ssh/id_rsa
+User			dougan
+
+Host			luckydirect
+Hostname		192.168.1.1 
+IdentityFile	~/.ssh/id_rsa
+User			dougan
+```
 **Enjoy!**

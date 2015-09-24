@@ -21,11 +21,12 @@ DOMAIN="$2"
 # Location of provisioning script
 PROVISION_SCRIPT="./provision/provision.sh"
 
+# Change the name/location of your ssh key
 function add_to_ssh_config_file {
-	echo "Host	$1" >> "$HOSTNAME"_ssh_config_template
-	echo "HOSTNAME	$2" >> "$HOSTNAME"_ssh_config_template
-	echo "IdentityFile	~/.ssh/outergo_rsa" >> "$HOSTNAME"_ssh_config_template
-	echo "User		$(whoami)" >> "$HOSTNAME"_ssh_config_template
+	echo "Host			$1" >> "$HOSTNAME"_ssh_config_template
+	echo "Hostname		$2" >> "$HOSTNAME"_ssh_config_template
+	echo "IdentityFile	~/.ssh/id_rsa" >> "$HOSTNAME"_ssh_config_template
+	echo "User			$(whoami)" >> "$HOSTNAME"_ssh_config_template
 }
 
 rm -f ./provision/FQDN *_ssh_config_template
@@ -52,7 +53,6 @@ if [ -n "$LINODE_CLI" ]; then
 	echo -e "\nFAILED: Linode Command Line Interface is not installed" 1>&2
 	exit
 fi
-linode_ip $HOSTNAME
 SUCCESS=$(echo $RESPONSE | grep -o -E "Completed.")
 if [ -z "$SUCCESS" ]; then
 	echo -e "\nFAILED: $RESPONSE" 1>&2
@@ -75,9 +75,9 @@ ssh root@"$IP" '/tmp/provision/provision.sh'
 
 if [ -n "$1" ]; then
 	echo "-> Created a template ssh config file for server: $HOSTNAME"
-	add_to_ssh_config_file $HOSTNAME "$HOSTNAME $DOMAIN"
+	add_to_ssh_config_file $HOSTNAME "$HOSTNAME.$DOMAIN"
 	echo "" >> "$HOSTNAME"_ssh_config_template
-	add_to_ssh_config_file $HOSTNAME "direct"
+	add_to_ssh_config_file "$HOSTNAME"direct $IP
 fi
 echo "-> Assigned IP: $IP"
 rm -f ./provision/FQDN
